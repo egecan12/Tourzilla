@@ -15,24 +15,77 @@ const tourData = fs.readFileSync(
   "utf-8",
   (err, data) => {}
 );
-console.log(JSON.parse(tourData));
+const tours = JSON.parse(tourData);
 
 //v1 stands for version one, it is a good practice to sepperate the versions
 app.get("/api/v1/tours", (req, res) => {
   // Simulate data (replace this with your actual data retrieval logic)
   res.status(200).json({
     status: "success",
-    results: tourData.length,
+    results: tours.length,
     data: {
-      tours: tourData,
+      tours: tours,
     },
   });
   res.end();
 });
 
+app.get("/api/v1/tours/:id", (req, res) => {
+  console.log(req.params);
+
+  const filteredTours = tours.find((el) => {
+    return el.id === parseInt(req.params.id);
+  });
+  if (!filteredTours) {
+    return res.status(404).json({
+      status: "fail",
+      message: "invalid id",
+    });
+  }
+  res.status(200).json({
+    status: "success",
+    data: {
+      filteredTours,
+    },
+  });
+});
+
+app.patch("/api/v1/tours/:id", (req, res) => {
+  const foundTour = tours.find((el) => el.id === parseInt(req.params.id));
+  console.log(parseInt(req.params));
+  if (!foundTour) {
+    return res.status(404).json({
+      status: "fail",
+      message: "invalid ID",
+    });
+  }
+  res.status(200).json({
+    status: "success",
+    message: "successfully updated",
+    data: {
+      tour: "<updated data here>",
+    },
+  });
+});
+
 app.post("/api/v1/tours", (req, res) => {
-  console.log(req);
-  res.end("done");
+  console.log(req.body);
+
+  const newID = tours[tours.length - 1].id + 1;
+
+  //object assing let us merge 2 objects
+  const newTour = Object.assign({ id: newID }, req.body);
+
+  tours.push(newTour);
+  fs.writeFile(`${__dirname}/data/tours.json`, JSON.stringify(tours), (err) => {
+    //201 means it is created- almost same as 200
+    res.status(201).json({
+      status: "success",
+      data: {
+        tours: tours,
+      },
+    });
+  });
 });
 
 app.listen(port, () => {
