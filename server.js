@@ -18,7 +18,8 @@ const tourData = fs.readFileSync(
 const tours = JSON.parse(tourData);
 
 //v1 stands for version one, it is a good practice to sepperate the versions
-app.get("/api/v1/tours", (req, res) => {
+
+const getAllTours = (req, res) => {
   // Simulate data (replace this with your actual data retrieval logic)
   res.status(200).json({
     status: "success",
@@ -28,9 +29,9 @@ app.get("/api/v1/tours", (req, res) => {
     },
   });
   res.end();
-});
+};
 
-app.get("/api/v1/tours/:id", (req, res) => {
+const getTour = (req, res) => {
   console.log(req.params);
 
   const filteredTours = tours.find((el) => {
@@ -48,9 +49,8 @@ app.get("/api/v1/tours/:id", (req, res) => {
       filteredTours,
     },
   });
-});
-
-app.patch("/api/v1/tours/:id", (req, res) => {
+};
+const updateTour = (req, res) => {
   const foundTour = tours.find((el) => el.id === parseInt(req.params.id));
   console.log(parseInt(req.params));
   if (!foundTour) {
@@ -66,9 +66,9 @@ app.patch("/api/v1/tours/:id", (req, res) => {
       tour: "<updated data here>",
     },
   });
-});
+};
 
-app.post("/api/v1/tours", (req, res) => {
+const createTour = (req, res) => {
   console.log(req.body);
 
   const newID = tours[tours.length - 1].id + 1;
@@ -86,7 +86,15 @@ app.post("/api/v1/tours", (req, res) => {
       },
     });
   });
-});
+};
+
+// app.get("/api/v1/tours", getAllTours);
+// app.get("/api/v1/tours/:id", getTour);
+// app.patch("/api/v1/tours/:id", updateTour);
+// app.post("/api/v1/tours", createTour);
+
+app.route("/api/v1/tours").get(getAllTours).post(createTour);
+app.route("/api/v1/tours/:id").get(getTour).patch(updateTour);
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
