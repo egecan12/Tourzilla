@@ -7,6 +7,19 @@ const tourData = fs.readFileSync(
 );
 const tours = JSON.parse(tourData);
 
+exports.checkID = (req, res, next, val) => {
+  const filteredTours = tours.find((el) => {
+    return el.id === parseInt(req.params.id);
+  });
+  if (!filteredTours) {
+    return res.status(404).json({
+      status: "fail",
+      message: "invalid id",
+    });
+  }
+  next();
+};
+
 exports.getAllTours = (req, res) => {
   // Simulate data (replace this with your actual data retrieval logic)
   res.status(200).json({
@@ -26,12 +39,6 @@ exports.getTour = (req, res) => {
   const filteredTours = tours.find((el) => {
     return el.id === parseInt(req.params.id);
   });
-  if (!filteredTours) {
-    return res.status(404).json({
-      status: "fail",
-      message: "invalid id",
-    });
-  }
   res.status(200).json({
     status: "success",
     data: {
@@ -42,12 +49,6 @@ exports.getTour = (req, res) => {
 exports.updateTour = (req, res) => {
   const foundTour = tours.find((el) => el.id === parseInt(req.params.id));
   console.log(parseInt(req.params));
-  if (!foundTour) {
-    return res.status(404).json({
-      status: "fail",
-      message: "invalid ID",
-    });
-  }
   res.status(200).json({
     status: "success",
     message: "successfully updated",
