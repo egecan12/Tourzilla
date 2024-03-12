@@ -20,6 +20,17 @@ exports.checkID = (req, res, next, val) => {
   next();
 };
 
+exports.checkRequestBody = (req, res, next) => {
+  // console.log(req.body);
+  if (!req.body.name || !req.body.duration) {
+    return res.status(400).json({
+      status: "fail",
+      message: "Missing name or price",
+    });
+  }
+  next();
+};
+
 exports.getAllTours = (req, res) => {
   // Simulate data (replace this with your actual data retrieval logic)
   res.status(200).json({
