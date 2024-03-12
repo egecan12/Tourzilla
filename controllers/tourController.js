@@ -1,9 +1,9 @@
-const fs = require("fs");
+const fs = require('fs');
 
 const tourData = fs.readFileSync(
   `${__dirname}/../data/tours-simple.json`,
-  "utf-8",
-  (err, data) => {}
+  'utf-8',
+  (err, data) => {},
 );
 const tours = JSON.parse(tourData);
 
@@ -13,8 +13,8 @@ exports.checkID = (req, res, next, val) => {
   });
   if (!filteredTours) {
     return res.status(404).json({
-      status: "fail",
-      message: "invalid id",
+      status: 'fail',
+      message: 'invalid id',
     });
   }
   next();
@@ -24,8 +24,8 @@ exports.checkRequestBody = (req, res, next) => {
   // console.log(req.body);
   if (!req.body.name || !req.body.duration) {
     return res.status(400).json({
-      status: "fail",
-      message: "Missing name or price",
+      status: 'fail',
+      message: 'Missing name or price',
     });
   }
   next();
@@ -34,7 +34,7 @@ exports.checkRequestBody = (req, res, next) => {
 exports.getAllTours = (req, res) => {
   // Simulate data (replace this with your actual data retrieval logic)
   res.status(200).json({
-    status: "success",
+    status: 'success',
     results: tours.length,
     requestTime: req.requestTime,
     data: {
@@ -51,7 +51,7 @@ exports.getTour = (req, res) => {
     return el.id === parseInt(req.params.id);
   });
   res.status(200).json({
-    status: "success",
+    status: 'success',
     data: {
       filteredTours,
     },
@@ -61,10 +61,10 @@ exports.updateTour = (req, res) => {
   const foundTour = tours.find((el) => el.id === parseInt(req.params.id));
   console.log(parseInt(req.params));
   res.status(200).json({
-    status: "success",
-    message: "successfully updated",
+    status: 'success',
+    message: 'successfully updated',
     data: {
-      tour: "<updated data here>",
+      tour: '<updated data here>',
     },
   });
 };
@@ -81,7 +81,7 @@ exports.createTour = (req, res) => {
   fs.writeFile(`${__dirname}/data/tours.json`, JSON.stringify(tours), (err) => {
     //201 means it is created- almost same as 200
     res.status(201).json({
-      status: "success",
+      status: 'success',
       data: {
         tours: tours,
       },

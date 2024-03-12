@@ -1,13 +1,14 @@
-const express = require("express");
+const express = require('express');
 const app = express();
-const morgan = require("morgan");
-const tourRouter = require("./routes/tourRoutes");
-const userRouter = require("./routes/userRoutes");
+const morgan = require('morgan');
+const tourRouter = require('./routes/tourRoutes');
+const userRouter = require('./routes/userRoutes');
 
 //MIDDLEWARES
+
 app.use(express.json());
-if (process.env.NODE_ENV === "developemnet") {
-  app.use(morgan("dev"));
+if (process.env.NODE_ENV === 'developemnet') {
+  app.use(morgan('dev'));
 }
 app.use(express.static(`${__dirname}/public`));
 
@@ -16,8 +17,10 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/", (req, res) => {
-  res.send("Hello, Express!");
+//ROUTES
+
+app.get('/', (req, res) => {
+  res.send('Hello, Express!');
 });
 
 //v1 stands for version one, it is a good practice to sepperate the versions
@@ -26,7 +29,7 @@ app.get("/", (req, res) => {
 
 //ROUTES
 
-app.use("/api/v1/users", userRouter);
-app.use("/api/v1/tours", tourRouter);
+app.use('/api/v1/users', userRouter);
+app.use('/api/v1/tours', tourRouter);
 
 module.exports = app;

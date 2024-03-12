@@ -1,9 +1,9 @@
-const express = require("express");
+const express = require('express');
 
 exports.getAllUsers = (req, res) => {
   // Simulate data (replace this with your actual data retrieval logic)
   res.status(200).json({
-    status: "success",
+    status: 'success',
     results: users.length,
     requestTime: req.requestTime,
     data: {
@@ -21,12 +21,12 @@ exports.getUser = (req, res) => {
   });
   if (!filteredUsers) {
     return res.status(404).json({
-      status: "fail",
-      message: "invalid id",
+      status: 'fail',
+      message: 'invalid id',
     });
   }
   res.status(200).json({
-    status: "success",
+    status: 'success',
     data: {
       filteredUsers,
     },
@@ -37,15 +37,15 @@ exports.updateUser = (req, res) => {
   console.log(parseInt(req.params));
   if (!foundUser) {
     return res.status(404).json({
-      status: "fail",
-      message: "invalid ID",
+      status: 'fail',
+      message: 'invalid ID',
     });
   }
   res.status(200).json({
-    status: "success",
-    message: "successfully updated",
+    status: 'success',
+    message: 'successfully updated',
     data: {
-      user: "<updated data here>",
+      user: '<updated data here>',
     },
   });
 };
@@ -61,7 +61,7 @@ exports.createUser = (req, res) => {
   fs.writeFile(`${__dirname}/data/tours.json`, JSON.stringify(users), (err) => {
     //201 means it is created- almost same as 200
     res.status(201).json({
-      status: "success",
+      status: 'success',
       data: {
         users: users,
       },
