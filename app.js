@@ -17,12 +17,6 @@ app.use((req, res, next) => {
   next();
 });
 
-//ROUTES
-
-app.get('/', (req, res) => {
-  res.send('Hello, Express!');
-});
-
 //v1 stands for version one, it is a good practice to sepperate the versions
 
 //ROUTE HANDLERS
@@ -31,5 +25,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/tours', tourRouter);
-
+app.all('*', (req, res, next) => {
+  next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
+});
 module.exports = app;
